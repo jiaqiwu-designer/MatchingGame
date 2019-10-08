@@ -11,6 +11,7 @@ const star3 = document.querySelector("#star3");
 const Moves = document.querySelector(".moves");
 const endingTxt = document.querySelector(".endingTxt");
 const endingDialog = document.querySelector(".endingDialogue");
+const endingRestart = document.querySelector(".endRestart");
 let cardsToCompare = [];
 let numberOfMoves = 0;
 let matchedCards = [];
@@ -78,7 +79,7 @@ cardContainer.addEventListener("click", function(event) {
         matchedCards.push(cardsToCompare[1]);
         cardsToCompare = [];
         console.log(matchedCards);
-        if (matchedCards.length === 2) {
+        if (matchedCards.length === 16) {
           endingDialog.style.visibility = "visible";
           endingTxt.textContent = `You finished game with ${starNumber} stars in ${seconds} seconds and ${numberOfMoves} moves.`;
           shuffle(flexOrder);
@@ -118,4 +119,9 @@ restart.addEventListener("click", function() {
   star1.className = "fa fa-star";
   star2.className = "fa fa-star";
   star3.className = "fa fa-star";
+});
+
+endingRestart.addEventListener("click", function() {
+  endingDialog.style.visibility = "hidden";
+  seconds = 0;
 });
