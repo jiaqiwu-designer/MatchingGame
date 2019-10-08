@@ -4,7 +4,11 @@ const allCards = document.querySelectorAll(".card");
 const allCardsArr = Array.from(allCards);
 const cardContainer = document.querySelector(".deck");
 const restart = document.querySelector(".restart");
-let Moves = document.querySelector(".moves");
+const timerText = document.querySelector(".timer");
+const star1 = document.querySelector("#star1");
+const star2 = document.querySelector("#star2");
+const star3 = document.querySelector("#star3");
+const Moves = document.querySelector(".moves");
 let cardsToCompare = [];
 let numberOfMoves = 0;
 let matchedCards = [];
@@ -34,6 +38,12 @@ function shuffle(array) {
   return array;
 }
 
+//create timer
+let seconds = 0;
+setInterval(function() {
+  timerText.innerHTML = seconds++;
+}, 1000);
+
 //click to show cards
 cardContainer.addEventListener("click", function(event) {
   event.target.classList.add("open", "show");
@@ -45,6 +55,16 @@ cardContainer.addEventListener("click", function(event) {
       numberOfMoves += 1;
       Moves.textContent = numberOfMoves;
 
+      if (numberOfMoves > 9) {
+        star3.className = "fa fa-star-o";
+      }
+      if (numberOfMoves > 18) {
+        star2.className = "fa fa-star-o";
+      }
+      if (numberOfMoves > 27) {
+        star1.className = "fa fa-star-o";
+      }
+
       if (compare(cardsToCompare[0].innerHTML, cardsToCompare[1].innerHTML)) {
         cardsToCompare[0].classList.add("match");
         cardsToCompare[1].classList.add("match");
@@ -52,7 +72,7 @@ cardContainer.addEventListener("click", function(event) {
         matchedCards.push(cardsToCompare[1]);
         cardsToCompare = [];
         console.log(matchedCards);
-        if (matchedCards.length === 4) {
+        if (matchedCards.length === 8) {
           shuffle(flexOrder);
           console.log(flexOrder);
           for (let [index, card] of matchedCards.entries()) {
@@ -60,6 +80,12 @@ cardContainer.addEventListener("click", function(event) {
             card.style.order = flexOrder[index];
           }
           matchedCards = [];
+          seconds = 0;
+          numberOfMoves = 0;
+          Moves.textContent = 0;
+          star1.className = "fa fa-star";
+          star2.className = "fa fa-star";
+          star3.className = "fa fa-star";
         }
       } else {
         cardsToCompare[0].classList.remove("open", "show");
@@ -78,4 +104,10 @@ restart.addEventListener("click", function() {
     card.style.order = flexOrder[index];
   }
   matchedCards = [];
+  seconds = 0;
+  numberOfMoves = 0;
+  Moves.textContent = 0;
+  star1.className = "fa fa-star";
+  star2.className = "fa fa-star";
+  star3.className = "fa fa-star";
 });
