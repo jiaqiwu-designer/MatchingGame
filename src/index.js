@@ -1,5 +1,6 @@
 import "./styles.css";
 
+//Define variables
 const allCards = document.querySelectorAll(".card");
 const allCardsArr = Array.from(allCards);
 const cardContainer = document.querySelector(".deck");
@@ -17,6 +18,7 @@ let numberOfMoves = 0;
 let matchedCards = [];
 let flexOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
+//Declare functions
 function compare(a, b) {
   if (a === b) {
     return true;
@@ -47,11 +49,14 @@ setInterval(function() {
   timerText.innerHTML = seconds++;
 }, 1000);
 
-//click to show cards
+//main game
 cardContainer.addEventListener("click", function(event) {
+  //click to show cards
   event.target.classList.add("open", "show");
-  cardsToCompare.push(event.target);
-  let starNumber = 3;
+
+  cardsToCompare.push(event.target); //add cards to compare pile
+
+  let starNumber = 3; //track star number
 
   setTimeout(() => {
     if (cardsToCompare.length > 1) {
@@ -59,6 +64,7 @@ cardContainer.addEventListener("click", function(event) {
       numberOfMoves += 1;
       Moves.textContent = numberOfMoves;
 
+      //set star ratings
       if (numberOfMoves > 9) {
         star3.className = "fa fa-star-o";
         starNumber = 2;
@@ -72,22 +78,34 @@ cardContainer.addEventListener("click", function(event) {
         starNumber = 0;
       }
 
+      //compare cards
       if (compare(cardsToCompare[0].innerHTML, cardsToCompare[1].innerHTML)) {
+        //add match class to matched cards
         cardsToCompare[0].classList.add("match");
         cardsToCompare[1].classList.add("match");
+
+        //add matched cards to the match pile
         matchedCards.push(cardsToCompare[0]);
         matchedCards.push(cardsToCompare[1]);
-        cardsToCompare = [];
-        console.log(matchedCards);
+
+        cardsToCompare = []; //clear the compare pile
+
+        //define winning condition
         if (matchedCards.length === 16) {
-          endingDialog.style.visibility = "visible";
+          endingDialog.style.visibility = "visible"; //display ending dialogue
+
+          //dynamically update the ending text message to players
           endingTxt.textContent = `You finished game with ${starNumber} stars in ${seconds} seconds and ${numberOfMoves} moves.`;
+
+          //shuffle cards
           shuffle(flexOrder);
           console.log(flexOrder);
           for (let [index, card] of matchedCards.entries()) {
             card.className = "card";
             card.style.order = flexOrder[index];
           }
+
+          //reset lists and stars
           matchedCards = [];
           seconds = 0;
           numberOfMoves = 0;
@@ -97,9 +115,10 @@ cardContainer.addEventListener("click", function(event) {
           star3.className = "fa fa-star";
         }
       } else {
+        //flip cards back
         cardsToCompare[0].classList.remove("open", "show");
         cardsToCompare[1].classList.remove("open", "show");
-        cardsToCompare = [];
+        cardsToCompare = []; //clear compare pile
       }
     }
   }, 1000);
