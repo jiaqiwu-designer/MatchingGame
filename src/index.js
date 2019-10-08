@@ -1,8 +1,11 @@
 import "./styles.css";
 
+const allCards = document.querySelectorAll(".card");
+const allCardsArr = Array.from(allCards);
 const cardContainer = document.querySelector(".deck");
-let cardsToCompare = [];
+const restart = document.querySelector(".restart");
 let Moves = document.querySelector(".moves");
+let cardsToCompare = [];
 let numberOfMoves = 0;
 let matchedCards = [];
 let flexOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
@@ -65,4 +68,14 @@ cardContainer.addEventListener("click", function(event) {
       }
     }
   }, 1000);
+});
+
+//retart the game
+restart.addEventListener("click", function() {
+  shuffle(flexOrder);
+  for (let [index, card] of allCardsArr.entries()) {
+    card.className = "card";
+    card.style.order = flexOrder[index];
+  }
+  matchedCards = [];
 });
